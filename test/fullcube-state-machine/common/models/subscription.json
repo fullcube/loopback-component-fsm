@@ -1,0 +1,77 @@
+{
+  "name": "Subscription",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "provider": {
+      "type": "string",
+      "required": true
+    },
+    "state": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {
+    "cancel": {
+      "isStatic": false,
+      "accepts": [],
+      "returns": {
+        "arg": "subscription",
+        "type": "Subscription",
+        "root": true,
+        "description": "The updated subscription"
+      },
+      "description": "Cancel a subscription",
+      "http": [
+        {
+          "path": "/cancel",
+          "verb": "put"
+        }
+      ]
+    },
+    "reactivate": {
+      "isStatic": false,
+      "accepts": [],
+      "returns": {
+        "arg": "subscription",
+        "type": "Subscription",
+        "root": true,
+        "description": "The updated subscription"
+      },
+      "description": "Reactive a canceled subscription",
+      "http": [
+        {
+          "path": "/reactivate",
+          "verb": "put"
+        }
+      ]
+    },
+    "expire": {
+      "isStatic": false,
+      "accepts": [],
+      "returns": {
+        "arg": "subscription",
+        "type": "Subscription",
+        "root": true,
+        "description": "The updated subscription"
+      },
+      "description": "Expire a subscription",
+      "http": [
+        {
+          "path": "/expire",
+          "verb": "put"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,25 @@
+product: '1.0.0'
+
+info:
+  name: fullcube-state-machine
+  title: fullcube-state-machine
+  version: 1.0.0
+
+apis:
+  'fullcube-state-machine':
+    $ref: fullcube-state-machine.yaml
+
+visibility:
+  view:
+    type: public
+  subscribe:
+    type: authenticated
+
+plans:
+  default:
+    title: Default Plan
+    description: Default Plan
+    approval: false
+    rate-limit:
+      value: 100/hour
+      hard-limit: false

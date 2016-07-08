@@ -1,0 +1,25 @@
+{
+  "name": "fullcube-workflow",
+  "version": "0.1.0",
+  "description": "Fullcube Workflow Engine",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.10.4",
+    "babel-eslint": "^6.1.0",
+    "babel-polyfill": "^6.9.1",
+    "babel-preset-es2015": "^6.9.0",
+    "eslint-config-fullcube": "git+https://github.com/fullcube/eslint-config-fullcube.git"
+  },
+  "dependencies": {
+    "bluebird": "^3.4.1",
+    "debug": "^2.2.0",
+    "fsm-as-promised": "^0.13.0",
+    "fullcube-logger": "git+https://github.com/fullcube/fullcube-logger.git",
+    "lodash": "^4.13.1"
+  }
+}
