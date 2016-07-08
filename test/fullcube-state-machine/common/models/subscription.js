@@ -4,72 +4,23 @@ const log = require('fullcube-logger')
 const createPromiseCallback = require('loopback-datasource-juggler/lib/utils').createPromiseCallback
 
 module.exports = function SubscriptionModel(Subscription) {
-  Subscription.STATEMACHINE = {
-    events: [
-      { name: 'activate', from: 'none', to: 'active' },
-      { name: 'cancel', from: 'active', to: 'canceled' },
-      { name: 'reactivate', from: 'canceled', to: 'active' },
-      { name: 'expire', from: [ 'active', 'canceled' ], to: 'expired' },
-    ],
-    callbacks: {
-      // Handle the activate transition.
-      onactivate: function onactivate(options) {
-        log.debug(`Starting ${options.name}...`)
-        const provider = new FcSubscription(options.instance)
+  Subscription.observe('fsm:oncancel', ctx => {
+    log.debug('fsm:oncancel')
+    return new FcSubscription(ctx.instance).cancel()
+      .then(() => ctx)
+  })
 
-        return provider.activate()
-          .then(() => options)
-      },
+  Subscription.observe('fsm:onreactivate', ctx => {
+    log.debug('fsm:onreactivate')
+    return new FcSubscription(ctx.instance).reactivate()
+      .then(() => ctx)
+  })
 
-      // Handle the cancel transition.
-      oncancel: function oncancel(options) {
-        log.debug(`Starting ${options.name}...`)
-        const provider = new FcSubscription(options.instance)
-
-        return provider.cancel()
-          .then(() => options)
-      },
-
-      // Handle the reactivate transition.
-      onreactivate: function onreactivate(options) {
-        log.debug(`Starting ${options.name}...`)
-        const provider = new FcSubscription(options.instance)
-
-        return provider.reactivate()
-          .then(() => options)
-      },
-
-      // Handle the expire transition.
-      onexpire: function onexpire(options) {
-        log.debug(`Starting ${options.name}...`)
-        const provider = new FcSubscription(options.instance)
-
-        return provider.expire()
-          .then(() => options)
-      },
-
-      // When leaving any state, grab the initial model instance and set in options for eacy access.
-      onleave: function onleave(options) {
-        options.instance = options.args[0]
-      },
-
-      // Persist the updated status in the database.
-      onenter: function onenter(options) {
-        log.debug(`finalizing state: ${options.to}`)
-        return options.instance.updateAttribute('status', options.to)
-          .then(result => {
-            options.res = result
-            return options
-          })
-      },
-
-      // Transition is complete and events can be triggered safely.
-      onentered: function onentered(options) {
-        log.debug(`state is now: ${options.to}`)
-        return options
-      },
-    },
-  }
+  Subscription.observe('fsm:onexpire', ctx => {
+    log.debug('fsm:onexpire')
+    return new FcSubscription(ctx.instance).expire()
+      .then(() => ctx)
+  })
 
   /**
    * Cancel a subscription

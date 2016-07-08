@@ -1,6 +1,6 @@
 # Loopback Finite State Machine
 
-This loopback component provides a finite state machine for loopback model instances.
+This loopback component provides a finite state machine (powered by https://github.com/vstirbu/fsm-as-promised) for loopback model instances, enabling precise control over when model instance methods may be called.
 
 ### Installation
 
