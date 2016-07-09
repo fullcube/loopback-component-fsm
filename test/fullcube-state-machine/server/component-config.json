@@ -4,10 +4,8 @@
   },
   "loopback-component-fixtures": {
     "loadFixturesOnStartup": true,
-    "environments": [
-      "development"
-    ],
-    "fixturesPath": "./server/fixtures/"
+    "environments": [ "development", "test" ],
+    "fixturesPath": "/test/fullcube-state-machine/fixtures/"
   },
   "../../../lib": { }
 }

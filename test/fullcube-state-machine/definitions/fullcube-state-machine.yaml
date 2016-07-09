@@ -299,17 +299,12 @@ paths:
 definitions:
   Subscription:
     properties:
-      provider:
-        type: string
-      state:
-        type: string
       status:
         type: string
       id:
         type: number
         format: double
     required:
-      - provider
       - status
     additionalProperties: false
 swagger: '2.0'

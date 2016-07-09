@@ -32,3 +32,8 @@ This loopback component provides a finite state machine (powered by https://gith
     .then(() => cb())
     .catch(cb)
   ```
+
+
+### TODO:
+
+- Provide/document a means to control what data gets returned.

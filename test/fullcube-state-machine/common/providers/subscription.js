@@ -8,25 +8,25 @@ module.exports = class FcSubscription {
 
   activate() {
     return Promise.delay(5000).then(() => {
-      log.info(`${this.provider} subscription activated`)
+      log.info('subscription activated')
     })
   }
 
   cancel() {
     return Promise.delay(5000).then(() => {
-      log.info(`${this.provider} subscription canceled`)
+      log.info('subscription canceled')
     })
   }
 
   reactivate() {
     return Promise.delay(5000).then(() => {
-      log.info(`${this.provider} subscription reactivated`)
+      log.info('subscription reactivated')
     })
   }
 
   expire() {
     return Promise.delay(5000).then(() => {
-      log.info(`${this.provider} subscription expired`)
+      log.info('subscription expired')
     })
   }
 }
