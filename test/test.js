@@ -22,7 +22,7 @@ sinon.stub(FcSubscription.prototype, 'expire').resolves()
 
 const Subscription = app.models.Subscription
 
-describe('Componenet', function() {
+describe('Component', function() {
   describe('Initialization', function() {
     it('should add a getStateMachine method to the app', function() {
       expect(app).to.itself.respondTo('getStateMachine')
@@ -115,6 +115,35 @@ describe('Observers', function() {
       it(`should run the ${observer} observer`, function() {
         expect(observersThatRan).to.include(observer)
       })
+    })
+  })
+})
+
+describe('Validation', function() {
+  const validStatuses = [
+    'none',
+    'active',
+    'canceled',
+    'expired',
+  ]
+
+  describe('Valid statuses', function() {
+    validStatuses.forEach(validStatus => {
+      it(`should allow to create a subscription with status ${validStatus}`, function() {
+        return Subscription.create({ status: validStatus })
+          .then(subscription => expect(subscription).to.have.property('status', validStatus))
+      })
+    })
+  })
+
+  describe('Invalid status', function() {
+    it('should not allow to create a subscription with an unknown status', function() {
+      return Subscription.create({ status: 'unknown' })
+        .catch(err => {
+          expect(err).to.have.property('name', 'ValidationError')
+          expect(err).to.have.property('message', 'The `Subscription` instance is not valid. Details: `status` is not included in the list (value: \"unknown\").')
+          expect(err).to.have.property('statusCode', 422)
+        })
     })
   })
 })
