@@ -1,7 +1,4 @@
 {
   "extends": "fullcube",
-  "root": true,
-  "rules": {
-    "id-length": "off"
-  }
+  "root": true
 }

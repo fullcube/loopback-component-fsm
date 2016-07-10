@@ -80,15 +80,15 @@ describe('State changes', function() {
 
 describe('Observers', function() {
   const event = 'cancel'
-  const from = 'active'
-  const to = 'canceled'
+  const fromState = 'active'
+  const toState = 'canceled'
   const observers = [
-    `fsm:onleave${from}`,
+    `fsm:onleave${fromState}`,
     'fsm:onleave',
     `fsm:on${event}`,
-    `fsm:onenter${to}`,
+    `fsm:onenter${toState}`,
     'fsm:onenter',
-    `fsm:onentered${to}`,
+    `fsm:onentered${toState}`,
     'fsm:onentered',
   ]
   const observersThatRan = []
