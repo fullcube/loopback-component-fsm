@@ -41,6 +41,7 @@
     "compression": "^1.0.3",
     "cors": "^2.5.2",
     "coveralls": "^2.11.9",
+    "eslint": "^3.0.1",
     "eslint-config-fullcube": "git+https://github.com/fullcube/eslint-config-fullcube.git",
     "helmet": "^1.3.0",
     "loglevel": "^1.4.1",
