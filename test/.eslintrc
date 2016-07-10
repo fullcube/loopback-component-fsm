@@ -1,6 +1,5 @@
 {
   "extends": "fullcube/mocha",
-  "parser": "babel-eslint",
   "root": true,
   "rules": {
     "id-length": "off"
