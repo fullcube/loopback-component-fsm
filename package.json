@@ -30,22 +30,18 @@
   "main": "lib/index.js",
   "scripts": {
     "dev": "nodemon test/fullcube-state-machine/server/server.js --ignore db.json --ext js,json",
-    "test": "nyc  --reporter=lcov --reporter=text mocha test/*test.js",
+    "test": "nyc  --reporter=lcov --reporter=text --reporter=text-summary mocha test/*test.js",
     "test:watch": "npm run test -- -w",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "devDependencies": {
-    "babel-cli": "^6.10.1",
-    "babel-core": "^6.10.4",
-    "babel-eslint": "^6.1.0",
-    "babel-polyfill": "^6.9.1",
-    "babel-preset-es2015": "^6.9.0",
     "chai": "^3.5.0",
     "coveralls": "^2.11.9",
     "eslint-config-fullcube": "git+https://github.com/fullcube/eslint-config-fullcube.git",
     "loglevel": "^1.4.1",
     "mocha": "^2.5.3",
     "nodemon": "^1.9.2",
+    "nyc": "^7.0.0",
     "sinon": "^1.17.4",
     "sinon-as-promised": "^3.0.1",
     "sinon-chai": "^2.8.0"
@@ -55,11 +51,5 @@
     "debug": "^2.2.0",
     "fsm-as-promised": "^0.13.0",
     "lodash": "^4.13.1"
-  },
-  "peerDependencies": {
-    "loopback": ">=2.25.0"
-  },
-  "optionalDependencies": {
-    "loopback-component-explorer": "2.5.0"
   }
 }

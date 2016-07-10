@@ -1,6 +1,3 @@
-require('babel-register')
-require('babel-polyfill')
-
 var loopback = require('loopback');
 var boot = require('loopback-boot');
 
