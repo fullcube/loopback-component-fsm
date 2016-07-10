@@ -1,32 +1,33 @@
 const Promise = require('bluebird')
-const log = require('fullcube-logger')
+const log = require('loglevel')
+
+log.enableAll()
 
 module.exports = class FcSubscription {
   constructor(instance) {
-    this.provider = instance.provider
+    this.instance = instance
   }
-
   activate() {
-    return Promise.delay(5000).then(() => {
-      log.info('subscription activated')
+    return Promise.delay(2000).then(() => {
+      log.info(`Subscription ${this.instance.id} activated`)
     })
   }
 
   cancel() {
-    return Promise.delay(5000).then(() => {
-      log.info('subscription canceled')
+    return Promise.delay(2000).then(() => {
+      log.info(`Subscription ${this.instance.id} canceled`)
     })
   }
 
   reactivate() {
-    return Promise.delay(5000).then(() => {
-      log.info('subscription reactivated')
+    return Promise.delay(2000).then(() => {
+      log.info(`Subscription ${this.instance.id} reactivated`)
     })
   }
 
   expire() {
-    return Promise.delay(5000).then(() => {
-      log.info('subscription expired')
+    return Promise.delay(2000).then(() => {
+      log.info(`Subscription ${this.instance.id} expired`)
     })
   }
 }

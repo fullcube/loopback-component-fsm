@@ -1,17 +1,39 @@
 {
-  "name": "fullcube-workflow",
+  "name": "loopback-component-fsm",
+  "description": "Finite State Machine for Loopback Models.",
   "version": "0.1.0",
-  "description": "Fullcube Workflow Engine",
-  "main": "index.js",
-  "scripts": {
-    "dev": "DEBUG=loopback:component:fsm nodemon test/fullcube-state-machine/server/server.js --ignore db.json --ext js,json",
-    "test": "babel-node ./node_modules/.bin/isparta cover --report text --report lcov _mocha test/*test.js",
-    "quicktest": "mocha test/*test.js",
-    "test:watch": "npm run test -- -w",
-    "coverage": "cat ./coverage/lcov.info | coveralls"
+  "author": {
+    "name": "Tom Kirkpatrick @mrfelton"
   },
-  "author": "",
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fullcube/loopback-component-fsm.git"
+  },
+  "keywords": [
+    "loopback",
+    "strongloop",
+    "fsm"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fullcube/loopback-component-fsm/issues"
+  },
+  "homepage": "https://github.com/fullcube/loopback-component-fsm",
+  "files": [
+    "lib",
+    "test"
+  ],
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "main": "lib/index.js",
+  "scripts": {
+    "dev": "nodemon test/fullcube-state-machine/server/server.js --ignore db.json --ext js,json",
+    "test": "nyc  --reporter=lcov --reporter=text mocha test/*test.js",
+    "test:watch": "npm run test -- -w",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
+  },
   "devDependencies": {
     "babel-cli": "^6.10.1",
     "babel-core": "^6.10.4",
@@ -21,7 +43,7 @@
     "chai": "^3.5.0",
     "coveralls": "^2.11.9",
     "eslint-config-fullcube": "git+https://github.com/fullcube/eslint-config-fullcube.git",
-    "isparta": "^4.0.0",
+    "loglevel": "^1.4.1",
     "mocha": "^2.5.3",
     "nodemon": "^1.9.2",
     "sinon": "^1.17.4",
@@ -32,7 +54,12 @@
     "bluebird": "^3.4.1",
     "debug": "^2.2.0",
     "fsm-as-promised": "^0.13.0",
-    "fullcube-logger": "git+https://github.com/fullcube/fullcube-logger.git",
     "lodash": "^4.13.1"
+  },
+  "peerDependencies": {
+    "loopback": ">=2.25.0"
+  },
+  "optionalDependencies": {
+    "loopback-component-explorer": "2.5.0"
   }
 }
