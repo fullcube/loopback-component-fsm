@@ -1,5 +1,8 @@
 # Loopback Finite State Machine
 
+[![Circle CI](https://circleci.com/gh/fullcube/loopback-component-fsm.svg?style=svg)](https://circleci.com/gh/fullcube/loopback-component-fsm) [![Dependencies](http://img.shields.io/david/fullcube/loopback-component-fsm.svg?style=flat)](https://david-dm.org/fullcube/loopback-component-fsm) [![Coverage Status](https://coveralls.io/repos/github/fullcube/loopback-component-fsm/badge.svg?branch=master)](https://coveralls.io/github/fullcube/loopback-component-fsm?branch=master)
+
+
 This loopback component provides a finite state machine (powered by https://github.com/vstirbu/fsm-as-promised) for loopback model instances, enabling precise control over when model instance methods may be called.
 
 ### Installation
