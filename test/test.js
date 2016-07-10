@@ -50,7 +50,6 @@ describe('State changes', function() {
     it('Should save the final state', function() {
       return this.subscription.cancel()
         .then(subscription => {
-          console.log('sdfsdfsdfsdd09-934-93409we09w09r0e9', subscription)
           expect(subscription).to.have.property('status', 'canceled')
         })
     })
@@ -94,7 +93,8 @@ describe('Observers', function() {
   ]
   const observersThatRan = []
 
-  before(function() {observers.forEach(observer => {
+  before(function() {
+    observers.forEach(observer => {
       // Clear out all existing observers for this test.
       Subscription.clearObservers(observer)
 
@@ -110,7 +110,6 @@ describe('Observers', function() {
     return Subscription.create({ status: 'active' })
       .then(subscription => subscription.cancel())
   })
-
   describe('Cancel', function() {
     observers.forEach(observer => {
       it(`should run the ${observer} observer`, function() {
@@ -142,7 +141,7 @@ describe('Validation', function() {
       return Subscription.create({ status: 'unknown' })
         .catch(err => {
           expect(err).to.have.property('name', 'ValidationError')
-          expect(err).to.have.property('message', 'The `Subscription` instance is not valid. Details: `status` is not included in the list (value: \"unknown\").')
+          expect(err.message).to.include('`status` is not included in the list (value: \"unknown\").')
           expect(err).to.have.property('statusCode', 422)
         })
     })
@@ -190,6 +189,7 @@ describe('Cache', function() {
 
     it('should create and cache a new state machine', function() {
       const fsm = app.getStateMachine(subscription)
+
       expect(app.locals).to.have.deep.property('loopback-component-fsm.Subscription.id:1', fsm)
     })
   })
@@ -224,24 +224,22 @@ describe('Cache', function() {
 
     it('should reuse an existing state machine if one is in use', function(done) {
 
-      // Make the subscription.cancel method take 200ms second to run.
-      Subscription.observe('fsm:oncancel', ctx => {
-        return Promise.delay(200).return(ctx)
-      })
+      // Make the subscription.cancel method take 100ms second to run.
+      Subscription.observe('fsm:oncancel', ctx => Promise.delay(100).return(ctx))
 
       // Start a cancelation.
       this.subscription.cancel()
-        .then(result => {
+        .then(() => {
           expect(app.locals).to.not.have.deep.property(`loopback-component-fsm.Subscription.id:${this.subscription.id}`)
           done()
         })
 
-        // Start another cancel in 100ms (whilst the other is still running).
-        Promise.delay(100).then(() => this.subscription.cancel())
-          .then(() => Promise.reject(new Error('Should not get this far')))
-          .catch(err => {
-            expect(err).to.have.property('message', 'Previous transition pending')
-          })
+      // Start another cancel in 50ms (whilst the other is still running).
+      Promise.delay(50).then(() => this.subscription.cancel())
+        .then(() => Promise.reject(new Error('Should not get this far')))
+        .catch(err => {
+          expect(err).to.have.property('message', 'Previous transition pending')
+        })
     })
   })
 })

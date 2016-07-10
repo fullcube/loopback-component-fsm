@@ -30,6 +30,8 @@
   "main": "lib/index.js",
   "scripts": {
     "dev": "nodemon test/fullcube-state-machine/server/server.js --ignore db.json --ext js,json",
+    "lint": "eslint .",
+    "pretest": "npm run lint",
     "test": "nyc  --reporter=lcov --reporter=text --reporter=text-summary mocha test/*test.js",
     "test:watch": "npm run test -- -w",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
