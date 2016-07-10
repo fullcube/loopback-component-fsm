@@ -147,3 +147,31 @@ describe('Validation', function() {
     })
   })
 })
+
+describe('Get event states and names', function() {
+
+  const testEvents = [
+    { name: 'activate', from: [ 'none' ], to: 'active' },
+    { name: 'cancel', from: 'active', to: 'canceled' },
+    { name: 'reactivate', from: 'canceled', to: 'active' },
+    { name: 'expire', from: [ 'none', 'active', 'canceled' ], to: 'expired' },
+    { name: 'expire', from: '*', to: 'expired' },
+  ]
+
+  it('should extract the event states', function(done) {
+    const stateEvents = Subscription.getEventStates(testEvents)
+
+    expect(stateEvents.length).to.equal(4)
+    expect(stateEvents).to.include('none', 'active', 'canceled', 'expired')
+    done()
+  })
+
+  it('should extract the event names', function(done) {
+    const stateNames = Subscription.getEventNames(testEvents)
+
+    expect(stateNames.length).to.equal(4)
+    expect(stateNames).to.include('activate', 'cancel', 'reactivate', 'expire')
+    done()
+  })
+
+})
