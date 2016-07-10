@@ -50,6 +50,7 @@ describe('State changes', function() {
     it('Should save the final state', function() {
       return this.subscription.cancel()
         .then(subscription => {
+          console.log('sdfsdfsdfsdd09-934-93409we09w09r0e9', subscription)
           expect(subscription).to.have.property('status', 'canceled')
         })
     })
@@ -148,8 +149,7 @@ describe('Validation', function() {
   })
 })
 
-describe('Get event states and names', function() {
-
+describe('Utility', function() {
   const testEvents = [
     { name: 'activate', from: [ 'none' ], to: 'active' },
     { name: 'cancel', from: 'active', to: 'canceled' },
@@ -158,20 +158,90 @@ describe('Get event states and names', function() {
     { name: 'expire', from: '*', to: 'expired' },
   ]
 
-  it('should extract the event states', function(done) {
-    const stateEvents = Subscription.getEventStates(testEvents)
+  describe('getEventStates', function() {
+    it('should extract the event states', function() {
+      const stateEvents = Subscription.getEventStates(testEvents)
 
-    expect(stateEvents.length).to.equal(4)
-    expect(stateEvents).to.include('none', 'active', 'canceled', 'expired')
-    done()
+      expect(stateEvents.length).to.equal(4)
+      expect(stateEvents).to.include('none', 'active', 'canceled', 'expired')
+    })
   })
 
-  it('should extract the event names', function(done) {
-    const stateNames = Subscription.getEventNames(testEvents)
+  describe('getEventNames', function() {
+    it('should extract the event names', function() {
+      const stateNames = Subscription.getEventNames(testEvents)
 
-    expect(stateNames.length).to.equal(4)
-    expect(stateNames).to.include('activate', 'cancel', 'reactivate', 'expire')
-    done()
+      expect(stateNames.length).to.equal(4)
+      expect(stateNames).to.include('activate', 'cancel', 'reactivate', 'expire')
+    })
+  })
+})
+
+describe('Cache', function() {
+  beforeEach(function() {
+    delete app.locals['loopback-component-fsm']
   })
 
+  describe('Add to cache', function() {
+    const subscription = new Subscription({
+      id: 1,
+      status: 'active',
+    })
+
+    it('should create and cache a new state machine', function() {
+      const fsm = app.getStateMachine(subscription)
+      expect(app.locals).to.have.deep.property('loopback-component-fsm.Subscription.id:1', fsm)
+    })
+  })
+
+  describe('Remove from cache', function() {
+    const subscription = new Subscription({
+      id: 1,
+      status: 'active',
+    })
+
+    it('should delete an existing state machine from the cache', function() {
+      app.getStateMachine(subscription)
+      app.deleteStateMachine(subscription)
+      expect(app.locals).to.not.have.deep.property('loopback-component-fsm.Subscription.id:1')
+    })
+  })
+
+  describe('Use cache through transition', function() {
+    beforeEach(function() {
+      return Subscription.create({ status: 'active' })
+        .then(subscription => {
+          this.subscription = subscription
+        })
+    })
+
+    it('should delete the state machine on completion', function() {
+      return this.subscription.cancel()
+        .then(() => {
+          expect(app.locals).to.not.have.deep.property(`loopback-component-fsm.Subscription.id:${this.subscription.id}`)
+        })
+    })
+
+    it('should reuse an existing state machine if one is in use', function(done) {
+
+      // Make the subscription.cancel method take 200ms second to run.
+      Subscription.observe('fsm:oncancel', ctx => {
+        return Promise.delay(200).return(ctx)
+      })
+
+      // Start a cancelation.
+      this.subscription.cancel()
+        .then(result => {
+          expect(app.locals).to.not.have.deep.property(`loopback-component-fsm.Subscription.id:${this.subscription.id}`)
+          done()
+        })
+
+        // Start another cancel in 100ms (whilst the other is still running).
+        Promise.delay(100).then(() => this.subscription.cancel())
+          .then(() => Promise.reject(new Error('Should not get this far')))
+          .catch(err => {
+            expect(err).to.have.property('message', 'Previous transition pending')
+          })
+    })
+  })
 })
