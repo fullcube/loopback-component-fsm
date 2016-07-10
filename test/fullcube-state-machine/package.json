@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "main": "server/server.js",
   "scripts": {
-    "dev": "DEBUG=loopback:component:fsm nodemon server/server.js --watch server --watch common --ext js,json",
     "start": "node .",
     "pretest": "eslint .",
     "posttest": "nsp check"
@@ -16,7 +15,6 @@
     "loopback-boot": "^2.6.5",
     "loopback-component-fixtures": "^1.0.0",
     "loopback-datasource-juggler": "^2.39.0",
-    "nodemon": "^1.9.2",
     "serve-favicon": "^2.0.1"
   },
   "devDependencies": {
