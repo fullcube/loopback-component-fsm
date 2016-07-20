@@ -2,10 +2,11 @@
 
 [![Circle CI](https://circleci.com/gh/fullcube/loopback-component-fsm.svg?style=svg)](https://circleci.com/gh/fullcube/loopback-component-fsm) [![Dependencies](http://img.shields.io/david/fullcube/loopback-component-fsm.svg?style=flat)](https://david-dm.org/fullcube/loopback-component-fsm) [![Coverage Status](https://coveralls.io/repos/github/fullcube/loopback-component-fsm/badge.svg?branch=master)](https://coveralls.io/github/fullcube/loopback-component-fsm?branch=master)
 
-
 This loopback component provides a finite state machine (powered by https://github.com/vstirbu/fsm-as-promised) for loopback model instances, enabling precise control over when model instance methods may be called.
 
-### Installation
+When a model method that is controlled by the Finite State Machine is called it will set a global lock that will prevent other copies of the same instance from being transitioned whist the existing transition is still underway. The state machine governs which state transitions may take place at any time given the current state of the instance and handles state change persistence on completion of a given transition.
+
+## Installation
 
 1. Install in you loopback project:
 
@@ -13,30 +14,98 @@ This loopback component provides a finite state machine (powered by https://gith
 
 2. Create a component-config.json file in your server folder (if you don't already have one)
 
-3. Configure options inside `component-config.json`. *(see configuration section)*
+3. Enable the component inside `component-config.json`.
 
   ```json
   {
-    "loopback-component-fsm": {
-      "{option}": "{value}"
+    "loopback-component-fsm": { }
+  }
+  ```
+
+## Configuration
+
+1. Define a state machine events in the mixin configuration for you models.
+
+  ```json
+  "mixins": {
+    "StateMachine": {
+      "stateProperty": "status",
+      "events": [
+        { "name": "activate", "from": "none", "to": "active" },
+        { "name": "cancel", "from": "active", "to": "canceled" },
+        { "name": "reactivate", "from": "canceled", "to": "active" },
+        { "name": "expire", "from": [ "active", "canceled" ], "to": "expired" }
+      ]
     }
   }
   ```
 
-### Usage
+**Options:**
 
-1. Define a state machine config on Model.STATEMACHINE property.
+- `stateProperty`
 
-2. Load and use the state machine for a given instance
+  [String] : The name of the model's state property. *(default: 'state')*
 
-  ```(javascript)
-  const fsm = app.getStateMachine(instance)
-  fsm.doSomething(instance)
-    .then(() => cb())
-    .catch(cb)
-  ```
+- `events`
+
+  [Array] : A list of events available to the state machine. Refer to the [FSM As Promised documentation](https://github.com/vstirbu/fsm-as-promised) for details on how events should be defined. *(default: [])*
+
+## Implementation:
+
+For each event in the State Machine, a series of model notifications will be sent - one for each stage in a transition - in the following order:
+
+| callback | state in which the callback executes |
+| --- | --- |
+| fsm:onleave{stateName} | from |
+| fsm:onleave | from |
+| fsm:on{eventName} | _from_ |
+| fsm:onenter{stateName} | _from_ |
+| fsm:onenter | _from_ |
+| fsm:onentered{stateName} | to |
+| fsm:onentered | to |
+
+You can act on any of these transition stages by observing the notification. For example:
+
+```javascript
+MyModel.observe('fsm:oncancel', ctx => ctx.instance.doSomething().then(() => ctx))
+```
+
+If you intend to perform an asynchronous operation in a given transition stage, your observer should return a promise that resolves to the `ctx` argument that was passed to it. Otherwise, you should simply return the `ctx` object.
+
+**Return values**
+
+The `ctx` object will be passed through the entire transition call chain and returned to the original caller. If you would like your caller to receive something other than the full `ctx` object you can set `ctx.res` which will be returned instead. [More information](https://github.com/vstirbu/fsm-as-promised#returned-values)
+
+## Usage
+
+Prototype methods will be attached to model instances for each of the named events in your mixin configuration. For
+example, the above mixin configuration will result in the following methods being added to MyModel.
+
+- `MyModel.prototype.activate`
+- `MyModel.prototype.cancel`
+- `MyModel.prototype.reactivate`
+- `MyModel.prototype.expire`
+
+These methods can be called as any other:
+
+```javascript
+MyModel.findOne()
+  .then(instance => {
+    log.debug(`Current state is: ${instance.state}`) // Current state is: active
+    return instance.cancel()
+  })
+  .then(instance => {
+    log.debug(`Current state is: ${instance.state}`) // Current state is: canceled
+    return instance.reactivate()
+  })
+  .then(instance => {
+    log.debug(`Current state is: ${instance.state}`) // Current state is: active
+  })
+```
+
+In this example, a model instance is loaded from the database and a finite state machine is initialized using the current status of the model instance. The instance is then transitioned to the canceled state, then back to the active state.
 
 
-### TODO:
+## More Information
 
-- Provide/document a means to control what data gets returned.
+Please refer to the [FSM As Promised](https://github.com/vstirbu/fsm-as-promised) documentation for more detail on the internals of the state machine implementation.
