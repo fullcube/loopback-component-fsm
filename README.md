@@ -54,15 +54,15 @@ When a model method that is controlled by the Finite State Machine is called it 
 
 For each event in the State Machine, a series of model notifications will be sent - one for each stage in a transition - in the following order:
 
-| callback | state in which the callback executes |
-| --- | --- |
-| fsm:onleave{stateName} | from |
-| fsm:onleave | from |
-| fsm:on{eventName} | _from_ |
-| fsm:onenter{stateName} | _from_ |
-| fsm:onenter | _from_ |
-| fsm:onentered{stateName} | to |
-| fsm:onentered | to |
+| callback | state in which the notification executes | description |
+| --- | --- | --- |
+| fsm:onleave{stateName} | from | do something when leaving state stateName |
+| fsm:onleave | from | do something when leaving any state |
+| fsm:on{eventName} | _from_ | do something when executing the transition |
+| fsm:onenter{stateName} | _from_ | do something when entering state stateName |
+| fsm:onenter | _from_ | do something when entering any state |
+| fsm:onentered{stateName} | to | do something after entering state stateName (transition is complete) |
+| fsm:onentered | to | do something after entering any state (transition is complete) |
 
 You can act on any of these transition stages by observing the notification. For example:
 
