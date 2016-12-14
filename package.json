@@ -1,7 +1,7 @@
 {
   "name": "loopback-component-fsm",
   "description": "Finite State Machine for Loopback Models.",
-  "version": "0.1.0",
+  "version": "0.0.0-development",
   "author": {
     "name": "Tom Kirkpatrick @mrfelton"
   },
@@ -34,11 +34,13 @@
     "pretest": "npm run lint",
     "test": "nyc  --reporter=lcov --reporter=text --reporter=text-summary mocha test/*test.js",
     "test:watch": "npm run test -- -w",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "devDependencies": {
     "chai": "^3.5.0",
     "compression": "^1.0.3",
+    "condition-circle": "1.5.0",
     "cors": "^2.5.2",
     "coveralls": "^2.11.9",
     "eslint": "^2.13.1",
@@ -58,12 +60,16 @@
     "serve-favicon": "^2.0.1",
     "sinon": "^1.17.4",
     "sinon-as-promised": "^3.0.1",
-    "sinon-chai": "^2.8.0"
+    "sinon-chai": "^2.8.0",
+    "semantic-release": "^6.3.2"
   },
   "dependencies": {
     "bluebird": "^3.4.1",
     "debug": "^2.2.0",
     "fsm-as-promised": "^0.13.0",
     "lodash": "^4.13.1"
+  },
+  "release": {
+    "verifyConditions": "condition-circle"
   }
 }
