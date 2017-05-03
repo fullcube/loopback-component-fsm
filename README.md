@@ -31,7 +31,7 @@ When a model method that is controlled by the Finite State Machine is called it 
     "StateMachine": {
       "stateProperty": "status",
       "events": [
-        { "name": "activate", "from": "none", "to": "active" },
+        { "name": "activate", "from": "none", "to": "active", "transitionOptions": { "skipBeforeSave" : true } },
         { "name": "cancel", "from": "active", "to": "canceled" },
         { "name": "reactivate", "from": "canceled", "to": "active" },
         { "name": "expire", "from": [ "active", "canceled" ], "to": "expired" }
