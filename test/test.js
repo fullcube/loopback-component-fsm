@@ -78,6 +78,36 @@ describe('State changes', function() {
   })
 })
 
+describe('Transition Options', function() {
+  before(function() {
+    return Subscription.create({ status: 'active' })
+      .then(subscription => {
+        this.subscription = subscription
+      })
+  })
+
+  before(function() {
+    sinon.spy(Subscription.prototype, 'updateAttribute')
+  })
+
+  it('Should have called updateAttribute with transitionOptions', function() {
+    return this.subscription.cancel()
+      .then(subscription => {
+        this.subscription = subscription
+        expect(subscription).to.have.property('status', 'canceled')
+        expect(Subscription.prototype.updateAttribute).to.be.calledWith('status', 'canceled', { skipBeforeSave: true })
+      })
+  })
+
+  it('Should have not called updateAttribute with skipBeforeSave transitionOptions', function() {
+    return this.subscription.expire()
+      .then(subscription => {
+        expect(subscription).to.have.property('status', 'expired')
+        expect(Subscription.prototype.updateAttribute).to.be.calledWith('status', 'expired')
+      })
+  })
+})
+
 describe('Observers', function() {
   const event = 'cancel'
   const fromState = 'active'

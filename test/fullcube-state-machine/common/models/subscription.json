@@ -72,7 +72,7 @@
       "stateProperty": "status",
       "events": [
         { "name": "activate", "from": "none", "to": "active" },
-        { "name": "cancel", "from": "active", "to": "canceled" },
+        { "name": "cancel", "from": "active", "to": "canceled", "transitionOptions": { "skipBeforeSave" : true }   },
         { "name": "reactivate", "from": "canceled", "to": "active" },
         { "name": "expire", "from": [ "active", "canceled" ], "to": "expired" }
       ]
