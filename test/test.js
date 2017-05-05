@@ -273,3 +273,24 @@ describe('Cache', function() {
     })
   })
 })
+
+
+describe('Error Handling', function() {
+  before(function() {
+    return Subscription.create({ status: 'active' })
+      .then(subscription => {
+        this.subscription = subscription
+      })
+  })
+
+  it('Should have thrown error with rejected message', function() {
+    return this.subscription.cancel()
+      .then(subscription => {
+        this.subscription = subscription
+        return this.subscription.reactivate()
+      })
+      .catch(err => {
+        expect(err).to.have.property('message', 'Reactivation not allowed.')
+      })
+  })
+})
