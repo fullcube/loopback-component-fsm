@@ -7,8 +7,6 @@ const sinon = require('sinon')
 
 chai.use(require('sinon-chai'))
 
-require('sinon-as-promised')(Promise)
-
 const expect = chai.expect
 
 const TEST_APP = path.join(__dirname, 'fullcube-state-machine')
