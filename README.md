@@ -30,6 +30,9 @@ When a model method that is controlled by the Finite State Machine is called it 
   "mixins": {
     "StateMachine": {
       "stateProperty": "status",
+      "settings": {
+        "allowForce": true
+      },
       "events": [
         { "name": "activate", "from": "none", "to": "active", "transitionOptions": { "skipBeforeSave" : true } },
         { "name": "cancel", "from": "active", "to": "canceled" },
@@ -45,6 +48,10 @@ When a model method that is controlled by the Finite State Machine is called it 
 - `stateProperty`
 
   [String] : The name of the model's state property. *(default: 'state')*
+
+- `settings`
+
+  [Object] : Settings passed to allow evaluate state change event. Currently only supported option is allowForce, when set to true and param force = true passed at method call time, status change will be forced event if its not allowed in event rules. This is can be passed for individual event also to only force certain event transitions . *(default: {})*
 
 - `events`
 
