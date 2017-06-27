@@ -18,5 +18,9 @@
     "dataSource": "db",
     "public": true,
     "strict": true
+  },
+  "Order": {
+    "dataSource": "db",
+    "public": true
   }
 }

@@ -21,6 +21,7 @@ sinon.stub(FcSubscription.prototype, 'reactivate').resolves()
 sinon.stub(FcSubscription.prototype, 'expire').resolves()
 
 const Subscription = app.models.Subscription
+const Order = app.models.Order
 
 describe('Component', function() {
   describe('Initialization', function() {
@@ -271,5 +272,33 @@ describe('Cache', function() {
           expect(err).to.have.property('message', 'Previous transition pending')
         })
     })
+  })
+})
+
+describe.only('Force status update', function() {
+  beforeEach(function() {
+    return Order.create({ status: 'prepare' })
+      .then(order => {
+        this.order = order
+      })
+  })
+
+  it('Should NOT allow to force update from deliver to cancel when not called with called with force true', function() {
+    return this.order.deliver()
+      .then(order => order.cancel())
+      .catch(err => {
+        expect(err).to.have.property('message', 'Invalid event in current state')
+        return this.order.reload().then(order => {
+          expect(order).to.have.property('status', 'deliver')
+        })
+      })
+  })
+
+  it('Should allow to force update from deliver to cancel', function() {
+    return this.order.deliver()
+      .then(order => order.cancel({ force: true }))
+      .then(order => {
+        expect(order).to.have.property('status', 'cancel')
+      })
   })
 })
