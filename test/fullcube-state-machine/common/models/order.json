@@ -79,9 +79,9 @@
         "allowForce": true
       },
       "events": [
-        { "name": "cancel", "from": "prepare", "to": "cancel" },
-        { "name": "deliver", "from": "prepare", "to": "deliver", "settings": { "allowForce" : true } },
-        { "name": "prepare", "from": [ "none" ], "to": "prepare" }
+        { "name": "cancel", "from": "prepare", "to": "canceled" },
+        { "name": "deliver", "from": "prepare", "to": "delivered", "settings": { "allowForce" : true } },
+        { "name": "prepare", "from": [ "none" ], "to": "prepared" }
       ]
     }
   }

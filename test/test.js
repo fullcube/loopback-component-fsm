@@ -288,7 +288,22 @@ describe('Force status update', function() {
       return this.order.deliver()
         .then(order => order.cancel({ force: true }))
         .then(order => {
-          expect(order).to.have.property('status', 'cancel')
+          expect(order).to.have.property('status', 'canceled')
+        })
+    })
+    it('should allow invalid state change only when requested', function() {
+      return this.order.deliver()
+        .then(order => order.cancel({ force: true }))
+        .then(order => {
+          expect(order).to.have.property('status', 'canceled')
+          return order
+        })
+        .then(order => order.deliver())
+        .catch(err => {
+          expect(err).to.have.property('message', 'Invalid event in current state')
+          return this.order.reload().then(order => {
+            expect(order).to.have.property('status', 'canceled')
+          })
         })
     })
   })
@@ -300,7 +315,7 @@ describe('Force status update', function() {
         .catch(err => {
           expect(err).to.have.property('message', 'Invalid event in current state')
           return this.order.reload().then(order => {
-            expect(order).to.have.property('status', 'deliver')
+            expect(order).to.have.property('status', 'delivered')
           })
         })
     })
