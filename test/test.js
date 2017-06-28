@@ -275,7 +275,7 @@ describe('Cache', function() {
   })
 })
 
-describe.only('Force status update', function() {
+describe('Force status update', function() {
   beforeEach(function() {
     return Order.create({ status: 'prepare' })
       .then(order => {
