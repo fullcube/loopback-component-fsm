@@ -1,0 +1,88 @@
+{
+  "name": "Order",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "status": {
+      "type": "string",
+      "required": true,
+      "default": "prepare"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {
+    "cancel": {
+      "isStatic": false,
+      "accepts": [],
+      "returns": {
+        "arg": "order",
+        "type": "Order",
+        "root": true,
+        "description": "The updated order"
+      },
+      "description": "Cancel a order",
+      "http": [
+        {
+          "path": "/cancel",
+          "verb": "put"
+        }
+      ]
+    },
+    "deliver": {
+      "isStatic": false,
+      "accepts": [],
+      "returns": {
+        "arg": "order",
+        "type": "Order",
+        "root": true,
+        "description": "The updated order"
+      },
+      "description": "Deliver a canceled order",
+      "http": [
+        {
+          "path": "/deliver",
+          "verb": "put"
+        }
+      ]
+    },
+    "prepare": {
+      "isStatic": false,
+      "accepts": [{
+        "arg": "params",
+        "type": "Object",
+        "description": "Transition params."
+      }],
+      "returns": {
+        "arg": "order",
+        "type": "Order",
+        "root": true,
+        "description": "The updated order"
+      },
+      "description": "Prepare a order",
+      "http": [
+        {
+          "path": "/prepare",
+          "verb": "put"
+        }
+      ]
+    }
+  },
+  "mixins": {
+    "StateMachine": {
+      "stateProperty": "status",
+      "settings": {
+        "allowForce": true
+      },
+      "events": [
+        { "name": "cancel", "from": "prepare", "to": "canceled" },
+        { "name": "deliver", "from": "prepare", "to": "delivered", "settings": { "allowForce" : true } },
+        { "name": "prepare", "from": [ "none" ], "to": "prepared" }
+      ]
+    }
+  }
+}

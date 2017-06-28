@@ -21,6 +21,7 @@ sinon.stub(FcSubscription.prototype, 'reactivate').resolves()
 sinon.stub(FcSubscription.prototype, 'expire').resolves()
 
 const Subscription = app.models.Subscription
+const Order = app.models.Order
 
 describe('Component', function() {
   describe('Initialization', function() {
@@ -269,6 +270,53 @@ describe('Cache', function() {
         .then(() => Promise.reject(new Error('Should not get this far')))
         .catch(err => {
           expect(err).to.have.property('message', 'Previous transition pending')
+        })
+    })
+  })
+})
+
+describe('Force status update', function() {
+  beforeEach(function() {
+    return Order.create({ status: 'prepare' })
+      .then(order => {
+        this.order = order
+      })
+  })
+
+  describe('allowed', function() {
+    it('should allow invalid state change', function() {
+      return this.order.deliver()
+        .then(order => order.cancel({ force: true }))
+        .then(order => {
+          expect(order).to.have.property('status', 'canceled')
+        })
+    })
+    it('should allow invalid state change only when requested', function() {
+      return this.order.deliver()
+        .then(order => order.cancel({ force: true }))
+        .then(order => {
+          expect(order).to.have.property('status', 'canceled')
+          return order
+        })
+        .then(order => order.deliver())
+        .catch(err => {
+          expect(err).to.have.property('message', 'Invalid event in current state')
+          return this.order.reload().then(order => {
+            expect(order).to.have.property('status', 'canceled')
+          })
+        })
+    })
+  })
+
+  describe('not allowed', function() {
+    it('should not allow invalid state change', function() {
+      return this.order.deliver()
+        .then(order => order.cancel())
+        .catch(err => {
+          expect(err).to.have.property('message', 'Invalid event in current state')
+          return this.order.reload().then(order => {
+            expect(order).to.have.property('status', 'delivered')
+          })
         })
     })
   })

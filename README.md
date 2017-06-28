@@ -30,6 +30,9 @@ When a model method that is controlled by the Finite State Machine is called it 
   "mixins": {
     "StateMachine": {
       "stateProperty": "status",
+      "settings": {
+        "allowForce": true
+      },
       "events": [
         { "name": "activate", "from": "none", "to": "active", "transitionOptions": { "skipBeforeSave" : true } },
         { "name": "cancel", "from": "active", "to": "canceled" },
@@ -45,6 +48,10 @@ When a model method that is controlled by the Finite State Machine is called it 
 - `stateProperty`
 
   [String] : The name of the model's state property. *(default: 'state')*
+
+- `settings`
+
+  [Object] : Settings used to control state machine operations. Currently the only supported option is `allowForce` which when set to `true` makes it possible to carry out an otherwise invalid state change by passing in `{ force: true }` at method call time. This option can also be set per event. *(default: {})*
 
 - `events`
 
@@ -86,7 +93,7 @@ example, the above mixin configuration will result in the following methods bein
 - `MyModel.prototype.reactivate`
 - `MyModel.prototype.expire`
 
-These methods can be called as any other:
+These methods all accept a first argument that is a settings object that is used by the fsm to determine how it functions (eg passing `{ force: true }` (see `allowForce` above). All arguments will be available from within the various fsm notifications.
 
 ```javascript
 MyModel.findOne()
@@ -96,7 +103,7 @@ MyModel.findOne()
   })
   .then(instance => {
     log.debug(`Current state is: ${instance.state}`) // Current state is: canceled
-    return instance.reactivate()
+    return instance.reactivate({ force: true })
   })
   .then(instance => {
     log.debug(`Current state is: ${instance.state}`) // Current state is: active
