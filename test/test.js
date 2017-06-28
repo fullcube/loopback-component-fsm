@@ -283,22 +283,26 @@ describe('Force status update', function() {
       })
   })
 
-  it('Should NOT allow to force update from deliver to cancel when not called with called with force true', function() {
-    return this.order.deliver()
-      .then(order => order.cancel())
-      .catch(err => {
-        expect(err).to.have.property('message', 'Invalid event in current state')
-        return this.order.reload().then(order => {
-          expect(order).to.have.property('status', 'deliver')
+  describe('allowed', function() {
+    it('should allow invalid state change', function() {
+      return this.order.deliver()
+        .then(order => order.cancel({ force: true }))
+        .then(order => {
+          expect(order).to.have.property('status', 'cancel')
         })
-      })
+    })
   })
 
-  it('Should allow to force update from deliver to cancel', function() {
-    return this.order.deliver()
-      .then(order => order.cancel({ force: true }))
-      .then(order => {
-        expect(order).to.have.property('status', 'cancel')
-      })
+  describe('not allowed', function() {
+    it('should not allow invalid state change', function() {
+      return this.order.deliver()
+        .then(order => order.cancel())
+        .catch(err => {
+          expect(err).to.have.property('message', 'Invalid event in current state')
+          return this.order.reload().then(order => {
+            expect(order).to.have.property('status', 'deliver')
+          })
+        })
+    })
   })
 })
