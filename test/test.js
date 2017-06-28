@@ -7,8 +7,6 @@ const sinon = require('sinon')
 
 chai.use(require('sinon-chai'))
 
-require('sinon-as-promised')(Promise)
-
 const expect = chai.expect
 
 const TEST_APP = path.join(__dirname, 'fullcube-state-machine')
@@ -269,7 +267,7 @@ describe('Cache', function() {
       Promise.delay(50).then(() => this.subscription.cancel())
         .then(() => Promise.reject(new Error('Should not get this far')))
         .catch(err => {
-          expect(err).to.have.property('message', 'Previous transition pending')
+          expect(err).to.have.property('message', 'Previous inter-state transition started')
         })
     })
   })

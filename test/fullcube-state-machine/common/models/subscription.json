@@ -15,8 +15,7 @@
   "relations": {},
   "acls": [],
   "methods": {
-    "cancel": {
-      "isStatic": false,
+    "prototype.cancel": {
       "accepts": [],
       "returns": {
         "arg": "subscription",
@@ -32,8 +31,7 @@
         }
       ]
     },
-    "reactivate": {
-      "isStatic": false,
+    "prototype.reactivate": {
       "accepts": [],
       "returns": {
         "arg": "subscription",
@@ -49,8 +47,7 @@
         }
       ]
     },
-    "expire": {
-      "isStatic": false,
+    "prototype.expire": {
       "accepts": [],
       "returns": {
         "arg": "subscription",
