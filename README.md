@@ -51,7 +51,7 @@ When a model method that is controlled by the Finite State Machine is called it 
 
 - `settings`
 
-  [Object] : Settings passed to allow evaluate state change event. Currently only supported option is allowForce, when set to true and param force = true passed at method call time, status change will be forced event if its not allowed in event rules. This is can be passed for individual event also to only force certain event transitions . *(default: {})*
+  [Object] : Settings used to control state machine operations. Currently the only supported option is `allowForce` which when set to `true` makes it possible to carry out an otherwise invalid state change by passing in `{ force: true }` at method call time. This option can also be set per event. *(default: {})*
 
 - `events`
 
