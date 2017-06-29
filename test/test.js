@@ -334,4 +334,26 @@ describe('Force status update', function() {
         })
     })
   })
+
+  describe('Failed state change', function() {
+    beforeEach(function() {
+      return Order.create()
+        .then(order => (this.order = order))
+    })
+
+    it('should return with the rejected error', function() {
+      this.disabledSpy = sinon.spy()
+      Order.observe('fsm:onentereddisabled', ctx => {
+        this.disabledSpy()
+        return Promise.resolve(ctx)
+      })
+      return this.order.disable()
+        .then(() => new Error('should not have completed event'))
+        .catch(err => {
+          expect(err).to.have.property('message', 'not implemented')
+          return this.order.reload().then(order => expect(order).to.have.property('status', 'prepared'))
+        })
+        .finally(() => expect(this.disabledSpy).to.not.have.been.called())
+    })
+  })
 })

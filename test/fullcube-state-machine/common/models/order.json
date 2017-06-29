@@ -78,7 +78,8 @@
       "events": [
         { "name": "cancel", "from": "prepared", "to": "canceled" },
         { "name": "deliver", "from": "prepared", "to": "delivered", "settings": { "allowForce" : true } },
-        { "name": "prepare", "from": [ "none" ], "to": "prepared" }
+        { "name": "prepare", "from": [ "none" ], "to": "prepared" },
+        { "name": "disable", "from": [ "canceled", "delivered", "prepared" ], "to": "disabled" }
       ]
     }
   }
