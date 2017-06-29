@@ -10,25 +10,25 @@ module.exports = class FcSubscription {
     this.instance = instance
   }
   activate() {
-    return Promise.delay(2000).then(() => {
+    return Promise.delay(100).then(() => {
       log.info(`Subscription ${this.instance.id} activated`)
     })
   }
 
   cancel() {
-    return Promise.delay(2000).then(() => {
+    return Promise.delay(100).then(() => {
       log.info(`Subscription ${this.instance.id} canceled`)
     })
   }
 
   reactivate() {
-    return Promise.delay(2000).then(() => {
+    return Promise.delay(100).then(() => {
       log.info(`Subscription ${this.instance.id} reactivated`)
     })
   }
 
   expire() {
-    return Promise.delay(2000).then(() => {
+    return Promise.delay(100).then(() => {
       log.info(`Subscription ${this.instance.id} expired`)
     })
   }

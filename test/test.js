@@ -1,3 +1,5 @@
+/* eslint no-console: 0 */
+
 'use strict'
 
 const Promise = require('bluebird')
@@ -5,6 +7,7 @@ const path = require('path')
 const chai = require('chai')
 const sinon = require('sinon')
 
+chai.use(require('dirty-chai'))
 chai.use(require('sinon-chai'))
 
 const expect = chai.expect
@@ -275,10 +278,8 @@ describe('Cache', function() {
 
 describe('Force status update', function() {
   beforeEach(function() {
-    return Order.create({ status: 'prepare' })
-      .then(order => {
-        this.order = order
-      })
+    return Order.create()
+      .then(order => (this.order = order))
   })
 
   describe('allowed', function() {
@@ -308,13 +309,28 @@ describe('Force status update', function() {
 
   describe('not allowed', function() {
     it('should not allow invalid state change', function() {
+      this.deliveredSpy = sinon.spy()
+      this.canceledSpy = sinon.spy()
+      Order.observe('fsm:onentereddelivered', ctx => {
+        this.deliveredSpy()
+        return Promise.resolve(ctx)
+      })
+      Order.observe('fsm:onenteredcanceled', ctx => {
+        this.canceledSpy()
+        return Promise.resolve(ctx)
+      })
       return this.order.deliver()
         .then(order => order.cancel())
         .catch(err => {
+          expect(this.order).to.have.property('status', 'delivered')
           expect(err).to.have.property('message', 'Invalid event in current state')
           return this.order.reload().then(order => {
             expect(order).to.have.property('status', 'delivered')
           })
+        })
+        .finally(() => {
+          expect(this.deliveredSpy).to.have.been.calledOnce()
+          expect(this.canceledSpy).to.not.have.been.called()
         })
     })
   })
