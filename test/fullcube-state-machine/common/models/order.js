@@ -39,7 +39,10 @@ module.exports = function OrderModel(Order) {
   // Disable
   Order.observe('fsm:ondisable', ctx => {
     log.info(`Disabling order ${ctx.instance.id}`)
-    return Promise.reject(new Error('not implemented'))
+    const error = new Error('Disable method is not yet allowed')
+
+    error.statusCode = 405
+    return Promise.reject(error)
   })
   Order.observe('fsm:onentereddisabled', ctx => {
     log.info(`Sucessfully disabled order ${ctx.instance.id}`)

@@ -3,6 +3,11 @@
     "loopback#favicon": {}
   },
   "initial": {
+    "loopback-context#per-request": {
+      "params": {
+        "enableHttpContext": true
+      }
+    },
     "compression": {},
     "cors": {
       "params": {
