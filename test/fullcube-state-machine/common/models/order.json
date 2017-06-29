@@ -9,7 +9,7 @@
     "status": {
       "type": "string",
       "required": true,
-      "default": "prepare"
+      "default": "prepared"
     }
   },
   "validations": [],
@@ -76,8 +76,8 @@
         "allowForce": true
       },
       "events": [
-        { "name": "cancel", "from": "prepare", "to": "canceled" },
-        { "name": "deliver", "from": "prepare", "to": "delivered", "settings": { "allowForce" : true } },
+        { "name": "cancel", "from": "prepared", "to": "canceled" },
+        { "name": "deliver", "from": "prepared", "to": "delivered", "settings": { "allowForce" : true } },
         { "name": "prepare", "from": [ "none" ], "to": "prepared" }
       ]
     }
