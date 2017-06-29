@@ -67,6 +67,19 @@
           "verb": "put"
         }
       ]
+    },
+    "prototype.disable": {
+      "returns": {
+        "arg": "order",
+        "type": "Order",
+        "root": true,
+        "description": "The updated order"
+      },
+      "description": "Disable a order",
+      "http": [ {
+        "path": "/disable",
+        "verb": "put"
+      } ]
     }
   },
   "mixins": {

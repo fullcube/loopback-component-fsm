@@ -350,7 +350,7 @@ describe('Force status update', function() {
       return this.order.disable()
         .then(() => new Error('should not have completed event'))
         .catch(err => {
-          expect(err).to.have.property('message', 'not implemented')
+          expect(err).to.have.property('message', 'Disable method is not yet allowed')
           return this.order.reload().then(order => expect(order).to.have.property('status', 'prepared'))
         })
         .finally(() => expect(this.disabledSpy).to.not.have.been.called())
