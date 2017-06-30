@@ -38,6 +38,7 @@
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "devDependencies": {
+    "@bubltechnology/customizable-commit-analyzer": "1.0.2-0",
     "chai": "3.5.0",
     "compression": "1.6.2",
     "condition-circle": "1.5.0",
@@ -70,7 +71,23 @@
     "fsm-as-promised": "0.14.4",
     "lodash": "4.17.4"
   },
+  "config": {
+    "commitTypeMap": {
+      "feat": "minor",
+      "fix": "patch",
+      "docs": "patch",
+      "style": "patch",
+      "refactor": "patch",
+      "perf": "patch",
+      "test": "patch",
+      "build": "patch",
+      "ci": "patch",
+      "chore": "patch",
+      "revert": "patch"
+    }
+  },
   "release": {
-    "verifyConditions": "condition-circle"
+    "verifyConditions": "condition-circle",
+    "analyzeCommits": "@bubltechnology/customizable-commit-analyzer"
   }
 }
