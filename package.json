@@ -35,7 +35,8 @@
     "test": "nyc --reporter=lcov --reporter=text --reporter=text-summary mocha test/*test.js",
     "test:watch": "npm run test -- -w",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "commitmsg": "validate-commit-msg"
   },
   "devDependencies": {
     "@bubltechnology/customizable-commit-analyzer": "1.0.2-0",
@@ -49,6 +50,7 @@
     "eslint-config-fullcube": "latest",
     "eslint-plugin-mocha": "4.11.0",
     "helmet": "3.6.1",
+    "husky": "0.14.1",
     "loglevel": "1.4.1",
     "loopback": "3.8.0",
     "loopback-boot": "2.25.0",
@@ -63,7 +65,8 @@
     "serve-favicon": "2.4.3",
     "sinon": "2.3.5",
     "sinon-chai": "2.11.0",
-    "strong-error-handler": "2.1.0"
+    "strong-error-handler": "2.1.0",
+    "validate-commit-msg": "2.12.2"
   },
   "dependencies": {
     "bluebird": "3.5.0",
@@ -84,6 +87,9 @@
       "ci": "patch",
       "chore": "patch",
       "revert": "patch"
+    },
+    "validate-commit-msg": {
+      "types": "conventional-commit-types"
     }
   },
   "release": {
