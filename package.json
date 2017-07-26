@@ -63,7 +63,7 @@
     "nyc": "10.3.2",
     "semantic-release": "6.3.6",
     "serve-favicon": "2.4.3",
-    "sinon": "2.3.5",
+    "sinon": "2.4.1",
     "sinon-chai": "2.11.0",
     "strong-error-handler": "2.1.0",
     "validate-commit-msg": "2.12.2"
