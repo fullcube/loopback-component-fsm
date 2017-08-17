@@ -53,7 +53,7 @@
     "husky": "0.14.1",
     "loglevel": "1.4.1",
     "loopback": "3.8.0",
-    "loopback-boot": "2.25.0",
+    "loopback-boot": "2.26.1",
     "loopback-component-explorer": "4.2.0",
     "loopback-component-fixtures": "1.1.0",
     "loopback-context": "1.0.0",
