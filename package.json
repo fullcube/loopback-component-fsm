@@ -62,7 +62,7 @@
     "nodemon": "1.11.0",
     "nyc": "10.3.2",
     "semantic-release": "6.3.6",
-    "serve-favicon": "2.4.3",
+    "serve-favicon": "2.4.4",
     "sinon": "2.3.5",
     "sinon-chai": "2.11.0",
     "strong-error-handler": "2.1.0",
