@@ -51,7 +51,7 @@
     "eslint-plugin-mocha": "4.11.0",
     "helmet": "3.6.1",
     "husky": "0.14.1",
-    "loglevel": "1.4.1",
+    "loglevel": "1.6.0",
     "loopback": "3.8.0",
     "loopback-boot": "2.25.0",
     "loopback-component-explorer": "4.2.0",
