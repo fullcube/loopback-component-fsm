@@ -52,7 +52,7 @@
     "helmet": "3.6.1",
     "husky": "0.14.1",
     "loglevel": "1.4.1",
-    "loopback": "3.8.0",
+    "loopback": "3.17.0",
     "loopback-boot": "2.25.0",
     "loopback-component-explorer": "4.2.0",
     "loopback-component-fixtures": "1.1.0",
