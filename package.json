@@ -59,7 +59,7 @@
     "loopback-context": "1.0.0",
     "loopback-testing": "1.4.0",
     "mocha": "3.4.2",
-    "nodemon": "1.11.0",
+    "nodemon": "1.18.0",
     "nyc": "10.3.2",
     "semantic-release": "6.3.6",
     "serve-favicon": "2.4.3",
