@@ -70,7 +70,7 @@
   },
   "dependencies": {
     "bluebird": "3.5.0",
-    "debug": "2.6.8",
+    "debug": "3.2.1",
     "fsm-as-promised": "0.14.4",
     "lodash": "4.17.4"
   },
