@@ -50,7 +50,7 @@
     "eslint-config-fullcube": "latest",
     "eslint-plugin-mocha": "4.11.0",
     "helmet": "3.6.1",
-    "husky": "0.14.1",
+    "husky": "1.1.2",
     "loglevel": "1.4.1",
     "loopback": "3.8.0",
     "loopback-boot": "2.25.0",
