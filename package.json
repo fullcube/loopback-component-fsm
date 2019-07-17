@@ -48,7 +48,7 @@
     "dirty-chai": "2.0.0",
     "eslint": "2.13.1",
     "eslint-config-fullcube": "latest",
-    "eslint-plugin-mocha": "4.11.0",
+    "eslint-plugin-mocha": "6.0.0",
     "helmet": "3.6.1",
     "husky": "0.14.1",
     "loglevel": "1.4.1",
